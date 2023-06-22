@@ -1,4 +1,6 @@
+using ApiKeyAuthentication;
 using ApiKeyAuthentication.Authentication;
+using ApiKeyAuthentication.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,10 +23,21 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-//app.UseMiddleware<ApiKeyAuthMiddleware>();
+app.UseMiddleware<ApiKeyAuthMiddleware>();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapGet("WeatherMini", () =>
+{
+    return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+        {
+            Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+            TemperatureC = Random.Shared.Next(-20, 55),
+            Summary = WeatherData.Summaries[Random.Shared.Next(WeatherData.Summaries.Length)]
+        })
+        .ToArray();
+});
 
 app.Run();
