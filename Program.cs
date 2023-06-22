@@ -23,11 +23,24 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseMiddleware<ApiKeyAuthMiddleware>();
+//app.UseMiddleware<ApiKeyAuthMiddleware>();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+// var group = app.MapGroup("weather").AddEndpointFilter<ApiKeyEndpointFilter>();
+//
+// group.MapGet("WeatherMini", () =>
+// {
+//     return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+//         {
+//             Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+//             TemperatureC = Random.Shared.Next(-20, 55),
+//             Summary = WeatherData.Summaries[Random.Shared.Next(WeatherData.Summaries.Length)]
+//         })
+//         .ToArray();
+// });
 
 app.MapGet("WeatherMini", () =>
 {
@@ -38,6 +51,6 @@ app.MapGet("WeatherMini", () =>
             Summary = WeatherData.Summaries[Random.Shared.Next(WeatherData.Summaries.Length)]
         })
         .ToArray();
-});
+}).AddEndpointFilter<ApiKeyEndpointFilter>();
 
 app.Run();
