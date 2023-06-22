@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ApiKeyAuthentication.Controllers;
 
 [ApiController]
+//[ServiceFilter(typeof(ApiKeyAuthFilter))]
 public class WeatherForecastController : ControllerBase
 {
     private static readonly string[] Summaries = new[]
